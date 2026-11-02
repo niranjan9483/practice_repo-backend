@@ -1,41 +1,45 @@
-
-pipeline{
+pipeline {
     agent any
-    
-    environment{
-        RELEASE='20.6'
+
+    environment {
+        RELEASE = '20.6'
+        LOG_LEVEL = 'INFO'
     }
-    stages{
-        stage("Build"){
-            agent any
-            environment{
-                LOG_LEVEL="INFO"
-            }
-            steps{
-                echo " Release logs ${RELEASE} and ${LOG_LEVEL}"
+
+    stages {
+        stage('Build') {
+            steps {
+                echo "Release logs ${RELEASE} and ${LOG_LEVEL}"
             }
         }
-        stage("Test"){
-            steps{
+
+        stage('Test') {
+            steps {
                 echo "Log info ${LOG_LEVEL}"
             }
         }
-        stage("Deploy"){
-            input{
+
+        stage('Deploy') {
+            input {
                 message 'Deploy?'
                 ok 'Do it'
-                parameters{
-                    string{name: "TARGET_ENVIRONMENT", defaultValue: 'PROD', description: "Target the deployment environment"}
+                parameters {
+                    string(
+                        name: 'TARGET_ENVIRONMENT',
+                        defaultValue: 'PROD',
+                        description: 'Target the deployment environment'
+                    )
                 }
             }
-            steps{
+            steps {
                 echo "Deploying release ${RELEASE} to environment ${TARGET_ENVIRONMENT}"
             }
         }
     }
-    post{
-        always{
-            echo "Print the deployment is happend or not , success or failure"
+
+    post {
+        always {
+            echo 'Print the deployment happened or not, success or failure'
         }
     }
 }

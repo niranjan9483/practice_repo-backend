@@ -9,7 +9,7 @@ pipeline{
         environment{
         LOG_LEVEL='INFO'
         }
-            step{
+            steps{
                 echo "Building Release ${RELEASE} with log level "
             }
         }
